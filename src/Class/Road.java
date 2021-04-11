@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Road {
     String id;
-    float length;
+    int length;
     int speedLimit;
     int[] startLocation;
     int[] endLocation;
@@ -20,11 +20,11 @@ public class Road {
         this.id = id;
     }
 
-    public float getLength() {
+    public int getLength() {
         return length;
     }
 
-    public void setLength(float length) {
+    public void setLength(int length) {
         this.length = length;
     }
 
@@ -76,5 +76,15 @@ public class Road {
         this.connectedRoads = connectedRoads;
     }
 
+    public Road(String id, int speedLimit, int length, int[] startLocation){
+        this.id = "road_" + id;
+        this.speedLimit = speedLimit;
+        this.length = length;
+        this.startLocation = startLocation;
+        this.endLocation = new int[]{this.length + this.startLocation[0], 0};
+    }
 
+    public void showStatus(){
+        System.out.printf("%s limit of:%dm/s is %dm long at location:%s to %s%n", this.getId(), this.getSpeedLimit(), this.getLength(), this.getStartLocation(), this.getEndLocation());
+    }
 }

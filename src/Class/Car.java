@@ -99,5 +99,29 @@ public class Car {
         nextmove = "Straight";
         onlane = 1;
     }
+    public void showStatus(){
+        System.out.printf("%s going:%dm/s on %s at position:%s,%s%n", this.getId(), this.getSpeed(),
+                this.getCurrentRoad().getId(), this.getPosition()[0],this.getPosition()[1]);
+    }
+
+    public void move(){
+        this.speed =this.currentRoad.getSpeedLimit();
+        if (!this.currentRoad.getLightsOnRoad().isEmpty() && this.position == this.currentRoad.getLightsOnRoad().get(0).getPosition()
+                && this.currentRoad.getLightsOnRoad().get(0).getStatus().equals("Red")){
+            this.speed = 0;
+        }else {
+            this.speed = this.currentRoad.getSpeedLimit();
+            if (this.currentRoad.getEndLocation() == this.getPosition() && !this.currentRoad.getConnectedRoads().isEmpty()) {
+                this.currentRoad.getCarsOnRoad().remove(this);
+                this.currentRoad = this.currentRoad.getConnectedRoads().get(0);
+                this.currentRoad.getCarsOnRoad().add(this);
+                this.position = currentRoad.getStartLocation();
+            } else if (this.currentRoad.getEndLocation()[1] > this.getPosition()[1]) {
+                this.position = new int[]{this.position[0], (this.position[1] + this.speed)};
+            } else {
+                this.speed = 0;
+            }
+        }
+    }
 
 }
