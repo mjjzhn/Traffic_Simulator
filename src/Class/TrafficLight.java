@@ -20,11 +20,11 @@ public class TrafficLight {
         this.status = status;
     }
 
-    public int[] getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(int[] position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 
@@ -38,14 +38,14 @@ public class TrafficLight {
 
     String id;
     String status;
-    int[] position;
+    int position;
     String roadid;
 
     public TrafficLight (String id, Road road){
         this.id = "TrafficLight_" + id;
         this.status = "Red";
         this.roadid = road.getId();
-        this.position = road.getEndLocation();
+        this.position = road.getLength();
         road.getLightsOnRoad().add(this);
     }
 

@@ -8,9 +8,9 @@ public class Road {
     int speedLimit;
     int[] startLocation;
     int[] endLocation;
-    ArrayList<Car> carsOnRoad;
-    ArrayList<TrafficLight> lightsOnRoad;
-    ArrayList<Road> connectedRoads;
+    ArrayList<Car> carsOnRoad = new ArrayList<>();
+    ArrayList<TrafficLight> lightsOnRoad = new ArrayList<>();
+    ArrayList<Road> connectedRoads = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -36,16 +36,16 @@ public class Road {
         this.speedLimit = speedLimit;
     }
 
-    public int[] getStartLocation() {
-        return startLocation;
+    public String getStartLocation() {
+        return startLocation[0] + "," + startLocation[1];
     }
 
     public void setStartLocation(int[] startLocation) {
         this.startLocation = startLocation;
     }
 
-    public int[] getEndLocation() {
-        return endLocation;
+    public String getEndLocation() {
+        return endLocation[0] + "," + endLocation[1];
     }
 
     public void setEndLocation(int[] endLocation) {

@@ -33,16 +33,12 @@ public class Car {
         this.speed = speed;
     }
 
-    public int[] getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(int[] position) {
+    public void setPosition(int position) {
         this.position = position;
-    }
-
-    public void setPosition(int a, int b) {
-        this.position = new int[]{a,b};
     }
 
     public Road getCurrentRoad() {
@@ -73,7 +69,7 @@ public class Car {
     float length;
     float breadth;
     int speed;
-    int[] position;
+    int position;
     Road currentRoad;
     String nextmove;
     int onlane;
@@ -84,7 +80,7 @@ public class Car {
         length = 1f;
         breadth = length * 0.5f;
         speed = 0;
-        position = currentRoad.getStartLocation();
+        position = 1;
         nextmove = "Straight";
         onlane = 1;
         this.currentRoad.getCarsOnRoad().add(this);
@@ -95,13 +91,13 @@ public class Car {
         length = 1f;
         breadth = length * 0.5f;
         speed = 0;
-        position = new int[]{0,0};
+        position = 1;
         nextmove = "Straight";
         onlane = 1;
     }
     public void showStatus(){
-        System.out.printf("%s going:%dm/s on %s at position:%s,%s%n", this.getId(), this.getSpeed(),
-                this.getCurrentRoad().getId(), this.getPosition()[0],this.getPosition()[1]);
+        System.out.printf("%s going:%dm/s on %s at position:%s%n", this.getId(), this.getSpeed(),
+                this.getCurrentRoad().getId(), this.getPosition());
     }
 
     public void move(){
@@ -111,13 +107,13 @@ public class Car {
             this.speed = 0;
         }else {
             this.speed = this.currentRoad.getSpeedLimit();
-            if (this.currentRoad.getEndLocation() == this.getPosition() && !this.currentRoad.getConnectedRoads().isEmpty()) {
+            if (this.currentRoad.getLength() == this.getPosition() && !this.currentRoad.getConnectedRoads().isEmpty()) {
                 this.currentRoad.getCarsOnRoad().remove(this);
                 this.currentRoad = this.currentRoad.getConnectedRoads().get(0);
                 this.currentRoad.getCarsOnRoad().add(this);
-                this.position = currentRoad.getStartLocation();
-            } else if (this.currentRoad.getEndLocation()[1] > this.getPosition()[1]) {
-                this.position = new int[]{this.position[0], (this.position[1] + this.speed)};
+                this.position = 1;
+            } else if (this.currentRoad.getLength() > this.getPosition()) {
+                this.position = (this.position + this.speed);
             } else {
                 this.speed = 0;
             }
