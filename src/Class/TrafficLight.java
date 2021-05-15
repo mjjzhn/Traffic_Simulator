@@ -1,5 +1,6 @@
 package Class;
 
+import java.awt.*;
 import java.util.Random;
 
 public class TrafficLight {
@@ -28,23 +29,23 @@ public class TrafficLight {
         this.position = position;
     }
 
-    public String getRoadid() {
-        return roadid;
+    public Road getRoad() {
+        return road;
     }
 
-    public void setRoadid(String roadid) {
-        this.roadid = roadid;
+    public void setRoad(Road road) {
+        this.road = road;
     }
 
     String id;
     String status;
     int position;
-    String roadid;
+    Road road;
 
     public TrafficLight (String id, Road road){
         this.id = "TrafficLight_" + id;
         this.status = "Red";
-        this.roadid = road.getId();
+        this.road = road;
         this.position = road.getLength();
         road.getLightsOnRoad().add(this);
     }
@@ -60,8 +61,37 @@ public class TrafficLight {
     }
 
     public void showStatus(){
-        System.out.printf("%s is:%s on %s at position:%s%n", this.getId(), this.getStatus(), this.getRoadid(), this.getPosition());
+        System.out.printf("%s is:%s on %s at position:%s%n", this.getId(), this.getStatus(), this.getRoad().getId(), this.getPosition());
     }
 
-
+    public void draw(Graphics g, int scale) {
+        if (road.getOrient() == Road.Orientation.HORIZONTAL) {
+            switch (status) {
+                case "red":
+                    g.setColor(Color.red);
+                    break;
+                case "green":
+                    g.setColor(Color.green);
+            }
+            int[] startLocation = getRoad().startLocation;
+            int x = (getPosition() + startLocation[0]) * scale;
+            int y = startLocation[1] * scale;
+            int height = (getRoad().getWidth() / 2) * scale;
+            g.fillRect(x, y, scale, height);
+        }
+        if (road.getOrient() == Road.Orientation.Vertical) {
+            switch (status) {
+                case "red":
+                    g.setColor(Color.red);
+                    break;
+                case "green":
+                    g.setColor(Color.green);
+            }
+            int[] startLocation = getRoad().getStartLocation();
+            int x = (startLocation[0] + (getRoad().getWidth() / 2)) * scale;
+            int y = (getPosition() + startLocation[1]) * scale;
+            int width = (getRoad().getWidth() / 2) * scale;
+            g.fillRect(x, y, width, scale);
+        }
+    }
 }

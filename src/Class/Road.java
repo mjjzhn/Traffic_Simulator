@@ -1,11 +1,20 @@
 package Class;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Road {
+
+    public enum Orientation{
+        HORIZONTAL, Vertical
+    }
+
+
+    private Orientation orient;
     String id;
     int length;
     int speedLimit;
+    int width;
     int[] startLocation;
     int[] endLocation;
     ArrayList<Car> carsOnRoad = new ArrayList<>();
@@ -36,16 +45,16 @@ public class Road {
         this.speedLimit = speedLimit;
     }
 
-    public String getStartLocation() {
-        return startLocation[0] + "," + startLocation[1];
+    public int[] getStartLocation() {
+        return startLocation;
     }
 
     public void setStartLocation(int[] startLocation) {
         this.startLocation = startLocation;
     }
 
-    public String getEndLocation() {
-        return endLocation[0] + "," + endLocation[1];
+    public int[] getEndLocation() {
+        return endLocation;
     }
 
     public void setEndLocation(int[] endLocation) {
@@ -76,15 +85,68 @@ public class Road {
         this.connectedRoads = connectedRoads;
     }
 
-    public Road(String id, int speedLimit, int length, int[] startLocation){
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public Orientation getOrient() {
+        return orient;
+    }
+
+    public void setOrient(Orientation orient) {
+        this.orient = orient;
+    }
+
+    public Road(String id, int speedLimit, int length, int[] startLocation, Orientation orient){
         this.id = "road_" + id;
         this.speedLimit = speedLimit;
         this.length = length;
+        width = 8;
+        this.orient = orient;
         this.startLocation = startLocation;
         this.endLocation = new int[]{this.length + this.startLocation[0], 0};
+        setEndLocation();
     }
 
     public void showStatus(){
         System.out.printf("%s limit of:%dm/s is %dm long at location:%s to %s%n", this.getId(), this.getSpeedLimit(), this.getLength(), this.getStartLocation(), this.getEndLocation());
+    }
+    private void setEndLocation() {
+        if (orient == Orientation.HORIZONTAL) {
+            this.endLocation = new int[]{this.length + this.startLocation[0], this.startLocation[1]};
+        } else if (orient == Orientation.Vertical) {
+            this.endLocation = new int[]{this.startLocation[1], this.length + this.startLocation[0]};
+        }
+    }
+
+    public void draw(Graphics g, int scale){
+        if (orient == Orientation.Vertical){
+            int[] startLocation = this.startLocation;
+            int x = startLocation[0] * scale;
+            int y = startLocation[1] * scale;
+            int width = this.width * scale;
+            int height = length * scale;
+            g.setColor(Color.darkGray);
+            g.fillRect(x, y, width, height);
+            g.setColor(Color.white);
+            g.fillRect(x + (width / 2) - scale / 6, y, scale / 6, height);
+            g.fillRect(x + (width / 2) + scale / 6, y, scale / 6, height);
+
+        }else if(orient == Orientation.HORIZONTAL){
+            int[] startLocation = this.startLocation;
+            int x = startLocation[0] * scale;
+            int y = startLocation[1] * scale;
+            int width = length * scale;
+            int height = this.width * scale;
+            g.setColor(Color.darkGray);
+            g.fillRect(x, y, width, height);
+            g.setColor(Color.white);
+            g.fillRect(x, y + (height / 2) - scale / 6, width, scale / 6);
+            g.fillRect(x, y + (height / 2) + scale / 6, width, scale / 6);
+        }
     }
 }

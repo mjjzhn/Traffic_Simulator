@@ -1,8 +1,11 @@
 package Class;
 
 public class Motorbike extends Car{
-    public Motorbike(String id) {
+    public Motorbike(String id, Road currentRoad) {
+        super(currentRoad);
         this.id = ("bike_" + id);
-        length = super.getLength() * 0.5f;
+        setLength(super.getLength() / 2);
+        breadth = super.getBreadth() / 2;
+        position = -length;
     }
 }
